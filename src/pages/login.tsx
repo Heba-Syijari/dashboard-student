@@ -16,11 +16,10 @@ import { Controller, useForm } from "react-hook-form";
 import { loginEvent } from "../lib/http";
 import LoginImage from "../assets/image.png";
 import { LoginData, loginScheme } from "../lib/validate";
-import { useLanguage, useSession } from "../hooks/useSession";
+import { useLanguage } from "../hooks/useSession";
 
 const LoginPage = () => {
   const navigate = useNavigate();
-  const { onLogin } = useSession();
 
   const { language, onChangeLanguage } = useLanguage();
 
@@ -36,8 +35,8 @@ const LoginPage = () => {
   const { mutate, isPending, isError, error } = useMutation({
     mutationKey: ["login"],
     mutationFn: loginEvent,
-    onSuccess: ({ token, userName }) => {
-      onLogin({ token, userName });
+    onSuccess: ({ token }) => {
+      localStorage.setItem("token", token);
       navigate("dashboard");
     },
   });
@@ -98,7 +97,7 @@ const LoginPage = () => {
               justifyContent: "center",
             }}
           >
-            <img alt="login" src={LoginImage} style={{ maxWidth: "90%" }} />
+            <img alt="login" src={LoginImage} style={{ maxWidth: "80%" }} />
           </Box>
         </Box>
 
@@ -110,6 +109,7 @@ const LoginPage = () => {
             alignItems: "center",
             justifyContent: "center",
             backgroundColor: "#2148C0",
+            borderRadius: 3,
           }}
         >
           <Box
@@ -142,7 +142,7 @@ const LoginPage = () => {
                       sx: {
                         borderRadius: 2,
                         backgroundColor: "rgba(119, 116, 116, 0.1)",
-                        height: 44,
+                        height: 40,
                         mb: 1,
                       },
                     }}
@@ -164,6 +164,7 @@ const LoginPage = () => {
                   </InputLabel>
 
                   <TextField
+                    type="password"
                     fullWidth
                     name={name}
                     value={value}
@@ -172,7 +173,7 @@ const LoginPage = () => {
                       sx: {
                         borderRadius: 2,
                         backgroundColor: "rgba(119, 116, 116, 0.1)",
-                        height: 44,
+                        height: 40,
                         mb: 1,
                       },
                     }}

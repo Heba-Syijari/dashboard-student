@@ -9,7 +9,6 @@ import {
 } from "@mui/material";
 
 import { useNavigate } from "react-router-dom";
-import { useSession } from "../hooks/useSession";
 import logoutImage from "../assets/logout.svg";
 
 type Props = {
@@ -19,13 +18,12 @@ type Props = {
 
 const SignoutModal = ({ isOpen, onClose }: Props) => {
   const navigate = useNavigate();
-  const { onLogout } = useSession();
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
   const signoutHandler = () => {
     onClose();
-    onLogout();
+    localStorage.setItem("token", "");
     navigate("/");
   };
 

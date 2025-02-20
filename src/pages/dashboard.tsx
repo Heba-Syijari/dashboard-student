@@ -7,14 +7,12 @@ import Navbar from "../components/Navbar";
 import Sidebar from "../components/Sidebar";
 import StudentsTable from "../components/StudentsTable";
 import AddSection from "../components/AddSection";
-import { useSession } from "../hooks/useSession";
 import { getAllGenders, getAllGrades } from "../lib/http";
 import { useNavigate } from "react-router-dom";
 
 const DashboardPage = () => {
   const navigate = useNavigate();
-
-  const { token } = useSession();
+  const token = localStorage.getItem("token");
 
   useQuery({
     queryKey: ["all-grades"],
@@ -36,7 +34,8 @@ const DashboardPage = () => {
   }, [token, navigate]);
 
   return (
-    <div className="w-full h-[90vh]">
+    <div className="w-full ">
+      {/* h-[90vh] */}
       <Navbar />
       <div className="flex h-full bg-slate-100">
         <Box display={{ xs: "none", md: "block" }}>

@@ -21,7 +21,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { queryClient } from "../main";
 import { addStudent, EditStudent } from "../lib/http";
 import type { Gender, Grade, TableRows } from "../types";
-import { useLanguage, useSession } from "../hooks/useSession";
+import { useLanguage } from "../hooks/useSession";
 import { studentScheme, StudentSchemeData } from "../lib/validate";
 
 type Props = {
@@ -44,7 +44,7 @@ const INITIAL_VALUE = {
 };
 
 const AddModal = ({ isOpen, onClose, type, student }: Props) => {
-  const { token } = useSession();
+  const token = localStorage.getItem("token");
   const { language } = useLanguage();
   const [isActionComplete, setIsActionComplete] = useState(false);
   const theme = useTheme();
@@ -369,7 +369,7 @@ const AddModal = ({ isOpen, onClose, type, student }: Props) => {
                 id="note"
                 label="Note"
                 margin="normal"
-                inputProps={{ style: { height: 100, textAlign: "start" } }}
+                inputProps={{ style: { height: 80, textAlign: "start" } }}
               />
             )}
           />

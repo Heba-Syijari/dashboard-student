@@ -12,7 +12,6 @@ import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 
 import { queryClient } from "../main";
 import { deleteStudent } from "../lib/http";
-import { useSession } from "../hooks/useSession";
 
 type Props = {
   isOpen: boolean;
@@ -20,7 +19,7 @@ type Props = {
 };
 
 const DeleteModal = ({ isOpen, onClose }: Props) => {
-  const { token } = useSession();
+  const token = localStorage.getItem("token");
 
   const navigate = useNavigate();
   const { search } = useLocation();

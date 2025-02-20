@@ -15,7 +15,8 @@ const Sidebar = () => {
     <Box
       sx={{
         width: 200,
-        height: "100vh",
+        height: "100%",
+        minHeight: "88vh",
         display: "flex",
         flexDirection: "column",
         paddingTop: "20px",
@@ -49,7 +50,7 @@ const Sidebar = () => {
       </Box>
 
       <Box
-        mb={2}
+        mb={7}
         gap={1}
         display="flex"
         alignItems="center"

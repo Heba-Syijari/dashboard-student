@@ -31,7 +31,7 @@ import AddModal from "./AddModal";
 import DeleteModal from "./DeleteModal";
 import type { TableRows } from "../types";
 import { getStudents } from "../lib/http";
-import { useLanguage, useSession } from "../hooks/useSession";
+import { useLanguage } from "../hooks/useSession";
 import pencilImage from "../assets/pencil.svg";
 import binImage from "../assets/bin.svg";
 import femaleImage from "../assets/female.svg";
@@ -68,7 +68,7 @@ const StudentsTable = () => {
   const [searchType, setSearchType] = useState("equal");
   const [searchDate, setSearchDate] = useState("");
 
-  const { token } = useSession();
+  const token = localStorage.getItem("token");
   const { language } = useLanguage();
 
   const params = new URLSearchParams(search);
@@ -204,7 +204,7 @@ const StudentsTable = () => {
         </Typography>
 
         <TextField
-          onBlur={blurHandler}
+          onChange={blurHandler}
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
