@@ -44,9 +44,9 @@ const DashboardPage = () => {
         <Box
           flexDirection="column"
           flexGrow={1}
-          width={400}
+          width={300}
           className="bg-white rounded-xl"
-          m={3}
+          m={{ xs: 0, md: 3 }}
           px={3}
           py={4}
         >

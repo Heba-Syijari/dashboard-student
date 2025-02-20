@@ -283,7 +283,7 @@ const StudentsTable = () => {
       </Box>
 
       <TableContainer component={Paper} sx={{ overflowX: "auto" }}>
-        <Table sx={{ minWidth: 700 }} aria-label="customized table">
+        <Table sx={{ minWidth: 600 }} aria-label="customized table">
           <TableHead>
             <TableRow>
               <StyledTableCell>First Name</StyledTableCell>

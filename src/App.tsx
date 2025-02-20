@@ -3,6 +3,7 @@ import axios from "axios";
 import {
   createBrowserRouter,
   Navigate,
+  redirect,
   RouterProvider,
 } from "react-router-dom";
 
@@ -15,6 +16,13 @@ const ProtectedRoute = ({ children }: { children: ReactNode }) => {
   const isAuthenticated = localStorage.getItem("token");
   return isAuthenticated ? children : <Navigate to="/" replace />;
 };
+const loader = () => {
+  const token = localStorage.getItem("token");
+  if (token) {
+    return redirect("/dashboard");
+  }
+  return null;
+};
 function App() {
   const router = createBrowserRouter([
     {
@@ -22,6 +30,7 @@ function App() {
       children: [
         {
           index: true,
+          loader: loader,
           element: <LoginPage />,
         },
         {
