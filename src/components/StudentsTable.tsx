@@ -116,10 +116,10 @@ const StudentsTable = () => {
       genderId: row.gender?.id ?? "",
       grade:
         (row.grade?.translations ?? []).find((i) => i.cultureCode === language)
-          ?.name || "N/A",
+          ?.name || "",
       gender:
         (row.gender?.translations ?? []).find((i) => i.cultureCode === language)
-          ?.name || "N/A",
+          ?.name || "",
     }));
   }
 
@@ -371,7 +371,7 @@ const StudentsTable = () => {
                 <StyledTableCell>{row.grade}</StyledTableCell>
                 <StyledTableCell>
                   <Box display="flex" alignItems="center">
-                    {row.gender !== "N/A" && (
+                    {row.gender !== "" && (
                       <Avatar
                         src={
                           row.gender === "Male" || row.gender === "ذكر"
