@@ -65,6 +65,28 @@ const LoginPage = () => {
     >
       <Box
         sx={{
+          position: "absolute",
+          top: 16,
+          right: 16,
+          display: { xs: "block", md: "none" },
+        }}
+      >
+        <Select
+          value={language}
+          sx={{
+            borderRadius: 2,
+            textAlign: "center",
+            height: 38,
+            width: 120,
+          }}
+          onChange={(e) => handleLanguageChange(e.target.value as 0 | 1)}
+        >
+          <MenuItem value={0}>English</MenuItem>
+          <MenuItem value={1}>العربية</MenuItem>
+        </Select>
+      </Box>
+      <Box
+        sx={{
           display: "flex",
           boxShadow: 3,
           borderRadius: 2,

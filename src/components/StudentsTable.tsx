@@ -109,12 +109,14 @@ const StudentsTable = () => {
   if (data && !isLoading) {
     rows = data.map((row) => ({
       ...row,
-      gradeId: row.grade.id,
-      genderId: row.gender.id,
-      grade: row.grade.translations.find((i) => i.cultureCode === language)!
-        .name,
-      gender: row.gender.translations.find((i) => i.cultureCode === language)!
-        .name,
+      gradeId: row.grade?.id ?? "",
+      genderId: row.gender?.id ?? "",
+      grade:
+        (row.grade?.translations ?? []).find((i) => i.cultureCode === language)
+          ?.name || "N/A",
+      gender:
+        (row.gender?.translations ?? []).find((i) => i.cultureCode === language)
+          ?.name || "N/A",
     }));
   }
 
@@ -333,15 +335,21 @@ const StudentsTable = () => {
                 <StyledTableCell>{row.grade}</StyledTableCell>
                 <StyledTableCell>
                   <Box display="flex" alignItems="center">
-                    <Avatar
-                      src={row.gender === "Male" ? maleImage : femaleImage}
-                      variant="square"
-                      sx={{
-                        height: 20,
-                        width: 13,
-                        mx: 1,
-                      }}
-                    />
+                    {row.gender !== "N/A" && (
+                      <Avatar
+                        src={
+                          row.gender === "Male" || row.gender === "ذكر"
+                            ? maleImage
+                            : femaleImage
+                        } // عرض الصورة بناءً على الجنس
+                        variant="square"
+                        sx={{
+                          height: 20,
+                          width: 13,
+                          mx: 1,
+                        }}
+                      />
+                    )}
                     {row.gender}
                   </Box>
                 </StyledTableCell>
