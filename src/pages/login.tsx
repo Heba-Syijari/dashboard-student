@@ -36,9 +36,8 @@ const LoginPage = () => {
   const { mutate, isPending, isError, error } = useMutation({
     mutationKey: ["login"],
     mutationFn: loginEvent,
-    onSuccess: ({ token, userName }) => {
+    onSuccess: ({ token }) => {
       localStorage.setItem("token", token);
-      localStorage.setItem("userName", token);
       navigate("dashboard");
     },
   });
