@@ -1,0 +1,83 @@
+{
+  "login": {
+    "title": "Login",
+    "username": "Username",
+    "password": "Password",
+    "signIn": "Sign In",
+    "error": "An error occurred"
+  },
+  "navbar": {
+    "logo": "Logo",
+    "username": "William Jacobson"
+  },
+  "studentsTable": {
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "dateOfBirth": "Date of Birth",
+    "educationalLevel": "Educational Level",
+    "gender": "Gender",
+    "country": "Country",
+    "city": "City",
+    "mobileNumber": "Mobile Number",
+    "notes": "Notes",
+    "actions": "Actions",
+    "filterBy": "Filter By",
+    "searchPlaceholder": "Search by first name, last name",
+    "date": "Date",
+    "equalTo": "Equal to",
+    "greaterThan": "Greater than",
+    "lessThan": "Less than",
+    "rowsPerPage": "Rows per page"
+  },
+  "addSection": {
+    "studentsData": "Students' Data",
+    "addStudent": "Add Student"
+  },
+  "sidebar": {
+    "studentsData": "Student's Data",
+    "logout": "Logout"
+  },
+  "addModal": {
+    "addStudent": "Add Student",
+    "modifyStudent": "Modify Student Data",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "dateOfBirth": "Date of Birth",
+    "educationalLevel": "Educational Level",
+    "country": "Country",
+    "city": "City",
+    "mobile": "Mobile",
+    "gender": "Gender",
+    "note": "Note",
+    "add": "Add",
+    "modify": "Modify",
+    "cancel": "Cancel",
+    "addSuccess": "Add Student Successfully!",
+    "editSuccess": "Edit Student Successfully!",
+    "error": "Something went wrong, Please try again."
+  },
+  "deleteModal": {
+    "areYouSure": "Are you sure?",
+    "confirmMessage": "Are you sure you want to delete this student's information?",
+    "cannotUndo": "This action cannot be undone.",
+    "delete": "Delete",
+    "cancel": "Cancel"
+  },
+  "signoutModal": {
+    "signOut": "Sign out",
+    "confirmMessage": "Are you sure you would like to sign out of your account?",
+    "cancel": "Cancel"
+  },
+  "validation": {
+    "usernameMinLength": "Username must be at least 3 characters long",
+    "passwordMinLength": "Password must be at least 6 characters long",
+    "firstNameMinLength": "First name must be at least 3 characters long",
+    "lastNameMinLength": "Last name must be at least 3 characters long",
+    "invalidDate": "Please enter a valid date",
+    "cityRequired": "City name is required",
+    "countryRequired": "Country name is required",
+    "invalidPhone": "Please enter a valid phone number",
+    "gradeRequired": "Grade is required",
+    "genderRequired": "Please select a valid gender"
+  }
+}

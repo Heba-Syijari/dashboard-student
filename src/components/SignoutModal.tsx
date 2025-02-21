@@ -7,7 +7,7 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
-
+import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import logoutImage from "../assets/logout.svg";
 
@@ -18,6 +18,7 @@ type Props = {
 
 const SignoutModal = ({ isOpen, onClose }: Props) => {
   const navigate = useNavigate();
+  const { t, i18n } = useTranslation();
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
@@ -41,6 +42,7 @@ const SignoutModal = ({ isOpen, onClose }: Props) => {
           position: "absolute",
           bgcolor: "background.paper",
           transform: "translate(-50%, -50%)",
+          direction: i18n.language === "ar" ? "rtl" : "ltr",
         }}
       >
         <Box
@@ -69,11 +71,11 @@ const SignoutModal = ({ isOpen, onClose }: Props) => {
             sx={{ mb: 2, fontWeight: "bold" }}
             textAlign="center"
           >
-            Sign out
+            {t("signoutModal.signOut")}
           </Typography>
 
           <Typography component="p" sx={{ mb: 6 }} textAlign="center">
-            Are you sure you would like to sign out of your account?
+            {t("signoutModal.confirmMessage")}
           </Typography>
 
           <Box display="flex" justifyContent="center" gap={2} pb={2}>
@@ -84,7 +86,7 @@ const SignoutModal = ({ isOpen, onClose }: Props) => {
               onClick={signoutHandler}
               sx={{ borderRadius: 2, textTransform: "none", height: 48 }}
             >
-              Sign out
+              {t("signoutModal.signOut")}
             </Button>
 
             <Button
@@ -95,7 +97,7 @@ const SignoutModal = ({ isOpen, onClose }: Props) => {
               // disabled={isPending}
               sx={{ borderRadius: 2, textTransform: "none", height: 48 }}
             >
-              Cancle
+              {t("signoutModal.cancel")}
             </Button>
           </Box>
         </Box>

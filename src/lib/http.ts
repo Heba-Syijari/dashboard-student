@@ -6,7 +6,9 @@ import {
   Student,
   AddStudentEvent,
   EditStudentEvent,
+  UserData,
 } from "../types";
+import { queryClient } from "../main";
 
 export const loginEvent = async ({
   userName,
@@ -16,7 +18,7 @@ export const loginEvent = async ({
   password: string;
 }) => {
   const { data } = await axios.post("/User/SignIn", { userName, password });
-
+  queryClient.setQueryData<UserData>(["user"], data);
   return data as { userName: string; token: string };
 };
 
@@ -77,7 +79,6 @@ export const addStudent = async ({
       Authorization: `Bearer ${token}`,
     },
   });
-
   return data;
 };
 

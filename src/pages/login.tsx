@@ -12,6 +12,7 @@ import { useNavigate } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 
 import { loginEvent } from "../lib/http";
 import LoginImage from "../assets/image.png";
@@ -20,7 +21,7 @@ import { useLanguage } from "../hooks/useSession";
 
 const LoginPage = () => {
   const navigate = useNavigate();
-
+  const { t, i18n } = useTranslation();
   const { language, onChangeLanguage } = useLanguage();
 
   const {
@@ -35,14 +36,20 @@ const LoginPage = () => {
   const { mutate, isPending, isError, error } = useMutation({
     mutationKey: ["login"],
     mutationFn: loginEvent,
-    onSuccess: ({ token }) => {
+    onSuccess: ({ token, userName }) => {
       localStorage.setItem("token", token);
+      localStorage.setItem("userName", token);
       navigate("dashboard");
     },
   });
 
   const submitHandler = ({ password, userName }: LoginData) => {
     mutate({ password, userName });
+  };
+
+  const handleLanguageChange = (value: 0 | 1) => {
+    onChangeLanguage(value);
+    i18n.changeLanguage(value === 0 ? "en" : "ar");
   };
 
   return (
@@ -54,6 +61,7 @@ const LoginPage = () => {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
+        direction: i18n.language === "ar" ? "rtl" : "ltr",
       }}
     >
       <Box
@@ -83,10 +91,10 @@ const LoginPage = () => {
               width: 120,
               mb: 2,
             }}
-            onChange={(e) => onChangeLanguage(e.target.value as 0 | 1)}
+            onChange={(e) => handleLanguageChange(e.target.value as 0 | 1)}
           >
             <MenuItem value={0}>English</MenuItem>
-            <MenuItem value={1}>Arabic</MenuItem>
+            <MenuItem value={1}>العربية</MenuItem>
           </Select>
 
           <Box
@@ -123,7 +131,7 @@ const LoginPage = () => {
             }}
           >
             <Typography component="h1" variant="h5" sx={{ mb: 3 }}>
-              Login
+              {t("login.title")}
             </Typography>
 
             <Controller
@@ -131,7 +139,9 @@ const LoginPage = () => {
               control={control}
               render={({ field: { name, onChange, value } }) => (
                 <>
-                  <InputLabel htmlFor="username">Username</InputLabel>
+                  <InputLabel htmlFor="username">
+                    {t("login.username")}
+                  </InputLabel>
 
                   <TextField
                     fullWidth
@@ -160,7 +170,7 @@ const LoginPage = () => {
               render={({ field: { name, value, onChange } }) => (
                 <>
                   <InputLabel htmlFor="password" sx={{ mt: 2 }}>
-                    Password
+                    {t("login.password")}
                   </InputLabel>
 
                   <TextField
@@ -200,13 +210,13 @@ const LoginPage = () => {
               }}
               onClick={handleSubmit(submitHandler)}
             >
-              Sign In
+              {t("login.signIn")}
             </Button>
 
             {isError && (
               <p style={{ color: "red" }}>
                 {/* @ts-ignore */}
-                {error.response.data}
+                {t("login.error")}: {error.response.data}
               </p>
             )}
           </Box>

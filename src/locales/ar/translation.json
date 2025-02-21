@@ -1,0 +1,83 @@
+{
+  "login": {
+    "title": "تسجيل الدخول",
+    "username": "اسم المستخدم",
+    "password": "كلمة المرور",
+    "signIn": "تسجيل الدخول",
+    "error": "حدث خطأ"
+  },
+  "navbar": {
+    "logo": "الشعار",
+    "username": "ويليام جاكوبسون"
+  },
+  "studentsTable": {
+    "firstName": "الاسم الأول",
+    "lastName": "الاسم الأخير",
+    "dateOfBirth": "تاريخ الميلاد",
+    "educationalLevel": "المستوى التعليمي",
+    "gender": "الجنس",
+    "country": "البلد",
+    "city": "المدينة",
+    "mobileNumber": "رقم الجوال",
+    "notes": "ملاحظات",
+    "actions": "الإجراءات",
+    "filterBy": "تصفية حسب",
+    "searchPlaceholder": "ابحث بالاسم الأول أو الأخير",
+    "date": "التاريخ",
+    "equalTo": "يساوي",
+    "greaterThan": "أكبر من",
+    "lessThan": "أقل من",
+    "rowsPerPage": "عدد الصفوف لكل صفحة"
+  },
+  "addSection": {
+    "studentsData": "بيانات الطلاب",
+    "addStudent": "إضافة طالب"
+  },
+  "sidebar": {
+    "studentsData": "بيانات الطلاب",
+    "logout": "تسجيل الخروج"
+  },
+  "addModal": {
+    "addStudent": "إضافة طالب",
+    "modifyStudent": "تعديل بيانات الطالب",
+    "firstName": "الاسم الأول",
+    "lastName": "الاسم الأخير",
+    "dateOfBirth": "تاريخ الميلاد",
+    "educationalLevel": "المستوى التعليمي",
+    "country": "البلد",
+    "city": "المدينة",
+    "mobile": "رقم الجوال",
+    "gender": "الجنس",
+    "note": "ملاحظات",
+    "add": "إضافة",
+    "modify": "تعديل",
+    "cancel": "إلغاء",
+    "addSuccess": "تمت إضافة الطالب بنجاح!",
+    "editSuccess": "تم تعديل بيانات الطالب بنجاح!",
+    "error": "حدث خطأ، يرجى المحاولة مرة أخرى."
+  },
+  "deleteModal": {
+    "areYouSure": "هل أنت متأكد؟",
+    "confirmMessage": "هل أنت متأكد أنك تريد حذف معلومات هذا الطالب؟",
+    "cannotUndo": "لا يمكن التراجع عن هذا الإجراء.",
+    "delete": "حذف",
+    "cancel": "إلغاء"
+  },
+  "signoutModal": {
+    "signOut": "تسجيل الخروج",
+    "confirmMessage": "هل أنت متأكد أنك تريد تسجيل الخروج من حسابك؟",
+    "cancel": "إلغاء"
+  },
+  "validation": {
+    "usernameMinLength": "يجب أن يكون اسم المستخدم على الأقل 3 أحرف",
+    "passwordMinLength": "يجب أن تكون كلمة المرور على الأقل 6 أحرف",
+    "firstNameMinLength": "يجب أن يكون الاسم الأول على الأقل 3 أحرف",
+    "lastNameMinLength": "يجب أن يكون الاسم الأخير على الأقل 3 أحرف",
+    "invalidDate": "الرجاء إدخال تاريخ صحيح",
+    "cityRequired": "اسم المدينة مطلوب",
+    "countryRequired": "اسم الدولة مطلوب",
+    "invalidPhone": "الرجاء إدخال رقم هاتف صحيح",
+    "gradeRequired": "المستوى التعليمي مطلوب",
+    "genderRequired": "الرجاء اختيار جنس صحيح"
+  }
+}

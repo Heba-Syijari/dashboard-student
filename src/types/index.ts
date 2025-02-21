@@ -65,3 +65,7 @@ export type EditStudentEvent = {
   firstName: string;
   birthDate: string;
 };
+export type UserData = {
+  userName: string;
+  token: string;
+};

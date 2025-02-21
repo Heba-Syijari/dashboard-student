@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { Box, Typography, Avatar } from "@mui/material";
 import PowerSettingsNewIcon from "@mui/icons-material/PowerSettingsNew";
+import { useTranslation } from "react-i18next";
 
 import SignoutModal from "./SignoutModal";
 import schoolImage from "../assets/school.svg";
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
-
+  const { t } = useTranslation();
   const closeModalHandler = () => {
     setIsOpen(false);
   };
@@ -44,7 +45,7 @@ const Sidebar = () => {
               textDecoration: "none",
             }}
           >
-            Student's Data
+            {t("sidebar.studentsData")}
           </Typography>
         </Box>
       </Box>
@@ -69,7 +70,7 @@ const Sidebar = () => {
             textDecoration: "none",
           }}
         >
-          Logout
+          {t("sidebar.logout")}
         </Typography>
       </Box>
     </Box>

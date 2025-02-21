@@ -1,5 +1,4 @@
 import { useState } from "react";
-
 import {
   Box,
   Modal,
@@ -11,13 +10,20 @@ import {
   InputLabel,
   Typography,
   FormControl,
+  FormHelperText,
   useMediaQuery,
   useTheme,
 } from "@mui/material";
 import { useMutation } from "@tanstack/react-query";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-
+import { useTranslation } from "react-i18next";
+import countries from "i18n-iso-countries";
+import enLocale from "i18n-iso-countries/langs/en.json";
+import arLocale from "i18n-iso-countries/langs/ar.json";
+import ReactCountryFlag from "react-country-flag";
+import "react-phone-number-input/style.css";
+import PhoneInput from "react-phone-number-input";
 import { queryClient } from "../main";
 import { addStudent, EditStudent } from "../lib/http";
 import type { Gender, Grade, TableRows } from "../types";
@@ -43,7 +49,11 @@ const INITIAL_VALUE = {
   birthDate: "",
 };
 
+countries.registerLocale(enLocale);
+countries.registerLocale(arLocale);
+
 const AddModal = ({ isOpen, onClose, type, student }: Props) => {
+  const { t, i18n } = useTranslation();
   const token = localStorage.getItem("token");
   const { language } = useLanguage();
   const [isActionComplete, setIsActionComplete] = useState(false);
@@ -114,6 +124,9 @@ const AddModal = ({ isOpen, onClose, type, student }: Props) => {
     setIsActionComplete(false);
   };
 
+  const countryList = countries.getNames(language === 1 ? "ar" : "en");
+  const defaultCountry = countryList["SY"];
+
   return (
     <>
       <Modal open={isOpen} onClose={onClose}>
@@ -129,10 +142,13 @@ const AddModal = ({ isOpen, onClose, type, student }: Props) => {
             position: "absolute",
             bgcolor: "background.paper",
             transform: "translate(-50%, -50%)",
+            direction: i18n.language === "ar" ? "rtl" : "ltr",
           }}
         >
           <Typography component="h1" variant="h5" sx={{ mb: 3 }}>
-            {type === "CREATE" ? "Add Student" : "Modify Student Data"}
+            {type === "CREATE"
+              ? t("addModal.addStudent")
+              : t("addModal.modifyStudent")}
           </Typography>
 
           <Box
@@ -149,13 +165,18 @@ const AddModal = ({ isOpen, onClose, type, student }: Props) => {
                   fullWidth
                   id="firstName"
                   margin="normal"
-                  label="First Name"
+                  label={t("addModal.firstName")}
                   error={Boolean(errors.firstName)}
                   helperText={errors.firstName?.message}
                   InputProps={{
                     sx: {
                       borderRadius: 2,
                       backgroundColor: "#F5F5F5",
+                    },
+                  }}
+                  InputLabelProps={{
+                    sx: {
+                      textAlign: i18n.language === "ar" ? "right" : "left",
                     },
                   }}
                 />
@@ -171,13 +192,18 @@ const AddModal = ({ isOpen, onClose, type, student }: Props) => {
                   fullWidth
                   id="lastName"
                   margin="normal"
-                  label="Last Name"
+                  label={t("addModal.lastName")}
                   error={Boolean(errors.lastName)}
                   helperText={errors.lastName?.message}
                   InputProps={{
                     sx: {
                       borderRadius: 2,
                       backgroundColor: "#F5F5F5",
+                    },
+                  }}
+                  InputLabelProps={{
+                    sx: {
+                      textAlign: i18n.language === "ar" ? "right" : "left",
                     },
                   }}
                 />
@@ -200,14 +226,19 @@ const AddModal = ({ isOpen, onClose, type, student }: Props) => {
                   type="date"
                   margin="normal"
                   id="dateOfBirth"
-                  label="Date of Birth"
+                  label={t("addModal.dateOfBirth")}
                   error={Boolean(errors.birthDate)}
                   helperText={errors.birthDate?.message}
-                  InputLabelProps={{ shrink: true }}
                   InputProps={{
                     sx: {
                       borderRadius: 2,
                       backgroundColor: "#F5F5F5",
+                    },
+                  }}
+                  InputLabelProps={{
+                    shrink: true,
+                    sx: {
+                      textAlign: i18n.language === "ar" ? "right" : "left",
                     },
                   }}
                 />
@@ -220,29 +251,32 @@ const AddModal = ({ isOpen, onClose, type, student }: Props) => {
               render={({ field }) => (
                 <FormControl fullWidth margin="normal">
                   <InputLabel id="educational-label">
-                    Educational Level
+                    {t("addModal.educationalLevel")}
                   </InputLabel>
 
                   <Select
                     {...field}
                     labelId="educational-label"
                     error={Boolean(errors.grade)}
-                    // helperText={errors.grade?.message}
                     sx={{ backgroundColor: "#F5F5F5", borderRadius: 2 }}
                   >
                     {grades &&
                       grades.map(({ id, translations }) => {
+                        const translation = translations?.find(
+                          (i) => i.cultureCode === language
+                        );
+                        const name = translation?.name ?? "Unknown";
                         return (
                           <MenuItem key={id} value={id}>
-                            {
-                              translations.find(
-                                (i) => i.cultureCode === language
-                              )!.name
-                            }
+                            {name}
                           </MenuItem>
                         );
                       })}
                   </Select>
+                  <FormHelperText sx={{ color: "#D32F2F" }}>
+                    {" "}
+                    {errors.grade?.message}
+                  </FormHelperText>
                 </FormControl>
               )}
             />
@@ -258,20 +292,34 @@ const AddModal = ({ isOpen, onClose, type, student }: Props) => {
               control={control}
               render={({ field }) => (
                 <FormControl fullWidth margin="normal">
-                  <InputLabel id="country-label">Country</InputLabel>
+                  <InputLabel id="country-label">
+                    {t("addModal.country")}
+                  </InputLabel>
                   <Select
                     id="country"
                     {...field}
                     labelId="country-label"
+                    defaultValue={defaultCountry}
                     error={Boolean(errors.country)}
-                    // helperText={errors.country?.message}
                     sx={{ backgroundColor: "#F5F5F5", borderRadius: 2 }}
                   >
-                    <MenuItem value="Syria">Syria</MenuItem>
-                    <MenuItem value="USA">Saudi</MenuItem>
-                    <MenuItem value="Egypt">Egypt</MenuItem>
-                    <MenuItem value="Canada">Türkiye</MenuItem>
+                    {Object.entries(countryList).map(([code, name]) => (
+                      <MenuItem key={code} value={name}>
+                        <Box display="flex" alignItems="center" gap={1}>
+                          <ReactCountryFlag
+                            countryCode={code}
+                            svg
+                            style={{ width: "20px", height: "15px" }}
+                          />
+                          {name}
+                        </Box>
+                      </MenuItem>
+                    ))}
                   </Select>
+                  <FormHelperText sx={{ color: "#D32F2F" }}>
+                    {" "}
+                    {errors.country?.message}
+                  </FormHelperText>
                 </FormControl>
               )}
             />
@@ -284,7 +332,7 @@ const AddModal = ({ isOpen, onClose, type, student }: Props) => {
                   {...field}
                   fullWidth
                   id="city"
-                  label="City"
+                  label={t("addModal.city")}
                   margin="normal"
                   error={Boolean(errors.city)}
                   helperText={errors.city?.message}
@@ -292,6 +340,11 @@ const AddModal = ({ isOpen, onClose, type, student }: Props) => {
                     sx: {
                       borderRadius: 2,
                       backgroundColor: "#F5F5F5",
+                    },
+                  }}
+                  InputLabelProps={{
+                    sx: {
+                      textAlign: i18n.language === "ar" ? "right" : "left",
                     },
                   }}
                 />
@@ -308,21 +361,42 @@ const AddModal = ({ isOpen, onClose, type, student }: Props) => {
               control={control}
               name="phone"
               render={({ field }) => (
-                <TextField
-                  {...field}
-                  fullWidth
-                  id="phone"
-                  label="Mobile"
-                  margin="normal"
-                  error={Boolean(errors.phone)}
-                  helperText={errors.phone?.message}
-                  InputProps={{
-                    sx: {
-                      borderRadius: 2,
+                <FormControl fullWidth margin="normal">
+                  <PhoneInput
+                    {...field}
+                    international
+                    defaultCountry="SY"
+                    placeholder={t("addModal.mobile")}
+                    onChange={(value) => field.onChange(value)}
+                    style={{
+                      width: "100%",
+                      borderRadius: "8px",
                       backgroundColor: "#F5F5F5",
-                    },
-                  }}
-                />
+                      height: "56px",
+                      padding: "10px",
+                      // marginTop: "16px",
+                      border: errors.phone
+                        ? "1px solid #D32F2F"
+                        : "1px solid #C0C0C0",
+                    }}
+                    inputProps={{
+                      style: {
+                        width: "100%",
+                      },
+                    }}
+                    countrySelectProps={{
+                      style: {
+                        border: "none",
+                        backgroundColor: "transparent",
+                        outline: "none",
+                      },
+                    }}
+                  />
+                  <FormHelperText sx={{ color: "#D32F2F" }}>
+                    {" "}
+                    {errors.phone?.message}
+                  </FormHelperText>
+                </FormControl>
               )}
             />
 
@@ -331,28 +405,33 @@ const AddModal = ({ isOpen, onClose, type, student }: Props) => {
               name="gender"
               render={({ field }) => (
                 <FormControl fullWidth margin="normal">
-                  <InputLabel id="gender-label">Gender</InputLabel>
+                  <InputLabel id="gender-label">
+                    {t("addModal.gender")}
+                  </InputLabel>
                   <Select
                     {...field}
                     id="gender"
                     labelId="gender-label"
                     sx={{ background: "#F5F5F5", borderRadius: 2 }}
                     error={Boolean(errors.gender)}
-                    // helperText={errors.gender?.message}
                   >
                     {genders &&
                       genders.map(({ id, translations }) => {
+                        const translation = translations?.find(
+                          (i) => i.cultureCode === language
+                        );
+                        const name = translation?.name ?? "Unknown";
                         return (
                           <MenuItem key={id} value={id}>
-                            {
-                              translations.find(
-                                (i) => i.cultureCode === language
-                              )!.name
-                            }
+                            {name}
                           </MenuItem>
                         );
                       })}
                   </Select>
+                  <FormHelperText sx={{ color: "#D32F2F" }}>
+                    {" "}
+                    {errors.gender?.message}
+                  </FormHelperText>
                 </FormControl>
               )}
             />
@@ -367,7 +446,7 @@ const AddModal = ({ isOpen, onClose, type, student }: Props) => {
                 fullWidth
                 multiline
                 id="note"
-                label="Note"
+                label={t("addModal.note")}
                 margin="normal"
                 inputProps={{ style: { height: 80, textAlign: "start" } }}
               />
@@ -390,7 +469,7 @@ const AddModal = ({ isOpen, onClose, type, student }: Props) => {
               onClick={handleSubmit(submitHandler)}
               sx={{ borderRadius: 3, textTransform: "none" }}
             >
-              {type === "CREATE" ? "Add" : "Modify"}
+              {type === "CREATE" ? t("addModal.add") : t("addModal.modify")}
             </Button>
 
             <Button
@@ -401,7 +480,7 @@ const AddModal = ({ isOpen, onClose, type, student }: Props) => {
               disabled={isPending || isEditPending}
               sx={{ borderRadius: 3, textTransform: "none" }}
             >
-              Cancel
+              {t("addModal.cancel")}
             </Button>
           </Box>
         </Box>
@@ -411,11 +490,11 @@ const AddModal = ({ isOpen, onClose, type, student }: Props) => {
         message={
           type === "CREATE"
             ? IsAddError
-              ? "Add Student Successfully!"
-              : "Some thing went wrong, Please try again."
+              ? t("addModal.error")
+              : t("addModal.addSuccess")
             : isEditError
-            ? "Some thing went wrong, Please try again."
-            : "Edit Student Successfully!"
+            ? t("addModal.error")
+            : t("addModal.editSuccess")
         }
         open={isActionComplete}
         onClose={dismisHandler}

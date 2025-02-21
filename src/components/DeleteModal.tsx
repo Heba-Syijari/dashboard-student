@@ -9,7 +9,7 @@ import {
   useTheme,
 } from "@mui/material";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
-
+import { useTranslation } from "react-i18next";
 import { queryClient } from "../main";
 import { deleteStudent } from "../lib/http";
 
@@ -20,7 +20,7 @@ type Props = {
 
 const DeleteModal = ({ isOpen, onClose }: Props) => {
   const token = localStorage.getItem("token");
-
+  const { t, i18n } = useTranslation();
   const navigate = useNavigate();
   const { search } = useLocation();
 
@@ -58,6 +58,7 @@ const DeleteModal = ({ isOpen, onClose }: Props) => {
           position: "absolute",
           bgcolor: "background.paper",
           transform: "translate(-50%, -50%)",
+          direction: i18n.language === "ar" ? "rtl" : "ltr",
         }}
       >
         <Box
@@ -82,7 +83,7 @@ const DeleteModal = ({ isOpen, onClose }: Props) => {
             sx={{ mb: 2 }}
             textAlign="center"
           >
-            Are you sure ?
+            {t("deleteModal.areYouSure")}
           </Typography>
 
           <Typography
@@ -90,7 +91,7 @@ const DeleteModal = ({ isOpen, onClose }: Props) => {
             sx={{ mb: 1, fontSize: 14, fontWeight: 400 }}
             textAlign="center"
           >
-            Are you sure you want to delete this student's information?
+            {t("deleteModal.confirmMessage")}
           </Typography>
 
           <Typography
@@ -99,7 +100,7 @@ const DeleteModal = ({ isOpen, onClose }: Props) => {
             textAlign="center"
             sx={{ mb: 2 }}
           >
-            This action cannot be undone.
+            {t("deleteModal.cannotUndo")}
           </Typography>
 
           <Box display="flex" justifyContent="center" gap={2} marginY={3}>
@@ -115,7 +116,7 @@ const DeleteModal = ({ isOpen, onClose }: Props) => {
                 bgcolor: "#F34235",
               }}
             >
-              Delete
+              {t("deleteModal.delete")}
             </Button>
 
             <Button
@@ -126,7 +127,7 @@ const DeleteModal = ({ isOpen, onClose }: Props) => {
               disabled={isPending}
               sx={{ borderRadius: 2, textTransform: "none", height: 48 }}
             >
-              Cancle
+              {t("deleteModal.cancel")}
             </Button>
           </Box>
         </Box>

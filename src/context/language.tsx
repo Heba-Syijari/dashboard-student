@@ -1,4 +1,5 @@
 import { createContext, useState, type ReactNode } from "react";
+import i18n from "../i18n";
 
 type LanguageContextProps = {
   language: 0 | 1;
@@ -16,6 +17,7 @@ export const LanguageContextProvider = ({
 
   const onChangeLanguage = (value: 0 | 1) => {
     setLanguage(value);
+    i18n.changeLanguage(value === 0 ? "en" : "ar");
   };
 
   return (

@@ -26,6 +26,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useLocation, useNavigate } from "react-router-dom";
 import TuneIcon from "@mui/icons-material/Tune";
 import SearchIcon from "@mui/icons-material/Search";
+import { useTranslation } from "react-i18next";
 
 import AddModal from "./AddModal";
 import DeleteModal from "./DeleteModal";
@@ -67,6 +68,7 @@ const StudentsTable = () => {
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [searchType, setSearchType] = useState("equal");
   const [searchDate, setSearchDate] = useState("");
+  const { t, i18n } = useTranslation();
 
   const token = localStorage.getItem("token");
   const { language } = useLanguage();
@@ -187,20 +189,21 @@ const StudentsTable = () => {
           gap: { xs: 2, md: 1 },
           alignItems: { xs: "center" },
           mb: 3,
+          direction: i18n.language === "ar" ? "rtl" : "ltr",
         }}
       >
         <TuneIcon
           width={20}
           color="primary"
-          sx={{ display: { xs: "none", sm: "inline" } }}
+          sx={{ display: { xs: "none", md: "inline" } }}
         />
         <Typography
-          sx={{ display: { xs: "none", sm: "inline" } }}
+          sx={{ display: { xs: "none", md: "inline" } }}
           variant="h6"
           component="h5"
           color="#1F7BF4"
         >
-          Filter By:
+          {t("studentsTable.filterBy")}
         </Typography>
 
         <TextField
@@ -214,12 +217,12 @@ const StudentsTable = () => {
             sx: {
               borderRadius: 2,
               backgroundColor: "rgba(119, 116, 116, 0.1)",
-              width: { xs: 220, sm: 230, md: 250, lg: 300, xl: 300 },
+              width: { xs: 220, sm: 230, xl: 260 },
               height: 49,
               mb: { xs: 2, md: 0 },
             },
           }}
-          placeholder="Search by first name, last name"
+          placeholder={t("studentsTable.searchPlaceholder")}
         />
         <Box
           sx={{
@@ -230,23 +233,25 @@ const StudentsTable = () => {
         >
           <FormControl
             sx={{
-              minWidth: 100,
+              minWidth: 90,
               height: 49,
               backgroundColor: "rgba(119, 116, 116, 0.1)",
             }}
           >
-            <InputLabel>Date</InputLabel>
+            <InputLabel>{t("studentsTable.date")}</InputLabel>
             <Select
               value={searchType}
               onChange={(e) => setSearchType(e.target.value)}
-              label="Date"
+              label={t("studentsTable.date")}
               sx={{
                 height: 49,
               }}
             >
-              <MenuItem value="equal">Equal to</MenuItem>
-              <MenuItem value="greater">Greater than</MenuItem>
-              <MenuItem value="less">Less than</MenuItem>
+              <MenuItem value="equal">{t("studentsTable.equalTo")}</MenuItem>
+              <MenuItem value="greater">
+                {t("studentsTable.greaterThan")}
+              </MenuItem>
+              <MenuItem value="less">{t("studentsTable.lessThan")}</MenuItem>
             </Select>
           </FormControl>
 
@@ -259,6 +264,10 @@ const StudentsTable = () => {
                 backgroundColor: "rgba(119, 116, 116, 0.1)",
                 width: 140,
                 height: 49,
+                direction: i18n.language === "ar" ? "rtl" : "ltr",
+                "& input": {
+                  textAlign: i18n.language === "ar" ? "right" : "left",
+                },
               },
             }}
           />
@@ -268,10 +277,15 @@ const StudentsTable = () => {
               height: 49,
               width: 40,
               borderRadius: 2,
-              borderTopLeftRadius: 0,
-              borderBottomLeftRadius: 0,
+              borderTopLeftRadius: i18n.language === "ar" ? 2 : 0,
+              borderBottomLeftRadius: i18n.language === "ar" ? 2 : 0,
+              borderTopRightRadius: i18n.language === "ar" ? 0 : 2,
+              borderBottomRightRadius: i18n.language === "ar" ? 0 : 2,
               border: "1px solid #ccc",
-              borderLeft: "0px solid #ccc",
+              borderLeft:
+                i18n.language === "ar" ? "1px solid #ccc" : "0px solid #ccc", // تعديل الحدود بناءً على اللغة
+              borderRight:
+                i18n.language === "ar" ? "0px solid #ccc" : "1px solid #ccc", // تعديل الحدود بناءً على اللغة
               "&:hover": {
                 backgroundColor: "rgba(119, 116, 116, 0.1)",
               },
@@ -282,20 +296,32 @@ const StudentsTable = () => {
         </Box>
       </Box>
 
-      <TableContainer component={Paper} sx={{ overflowX: "auto" }}>
+      <TableContainer
+        component={Paper}
+        sx={{
+          overflowX: "auto",
+          direction: i18n.language === "ar" ? "rtl" : "ltr",
+        }}
+      >
         <Table sx={{ minWidth: 600 }} aria-label="customized table">
           <TableHead>
             <TableRow>
-              <StyledTableCell>First Name</StyledTableCell>
-              <StyledTableCell>Last Name</StyledTableCell>
-              <StyledTableCell>Date of Birth</StyledTableCell>
-              <StyledTableCell>Educational Level</StyledTableCell>
-              <StyledTableCell>Gender</StyledTableCell>
-              <StyledTableCell>Country</StyledTableCell>
-              <StyledTableCell>City</StyledTableCell>
-              <StyledTableCell>Mobile Number</StyledTableCell>
-              <StyledTableCell>Notes</StyledTableCell>
-              <StyledTableCell>Actions</StyledTableCell>
+              <StyledTableCell>{t("studentsTable.firstName")}</StyledTableCell>
+              <StyledTableCell>{t("studentsTable.lastName")}</StyledTableCell>
+              <StyledTableCell>
+                {t("studentsTable.dateOfBirth")}
+              </StyledTableCell>
+              <StyledTableCell>
+                {t("studentsTable.educationalLevel")}
+              </StyledTableCell>
+              <StyledTableCell>{t("studentsTable.gender")}</StyledTableCell>
+              <StyledTableCell>{t("studentsTable.country")}</StyledTableCell>
+              <StyledTableCell>{t("studentsTable.city")}</StyledTableCell>
+              <StyledTableCell>
+                {t("studentsTable.mobileNumber")}
+              </StyledTableCell>
+              <StyledTableCell>{t("studentsTable.notes")}</StyledTableCell>
+              <StyledTableCell>{t("studentsTable.actions")}</StyledTableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -313,7 +339,7 @@ const StudentsTable = () => {
                       sx={{
                         height: 20,
                         width: 13,
-                        mr: 1,
+                        mx: 1,
                       }}
                     />
                     {row.gender}
@@ -368,10 +394,11 @@ const StudentsTable = () => {
           justifyContent: "space-between",
           alignItems: "center",
           mt: 2,
+          direction: i18n.language === "ar" ? "rtl" : "ltr",
         }}
       >
         <div>
-          Rows per page:
+          {t("studentsTable.rowsPerPage")}:
           <select
             value={rowsPerPage}
             onChange={handleChangeRowsPerPage}
