@@ -37,6 +37,8 @@ import pencilImage from "../assets/pencil.svg";
 import binImage from "../assets/bin.svg";
 import femaleImage from "../assets/female.svg";
 import maleImage from "../assets/male.svg";
+import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
+import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -68,6 +70,7 @@ const StudentsTable = () => {
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [searchType, setSearchType] = useState("equal");
   const [searchDate, setSearchDate] = useState("");
+  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
   const { t, i18n } = useTranslation();
 
   const token = localStorage.getItem("token");
@@ -176,8 +179,19 @@ const StudentsTable = () => {
     setFilteredRows(filtered);
   };
 
+  const sortRows = (rows: TableRows[]) => {
+    return rows.sort((a, b) => {
+      if (sortOrder === "asc") {
+        return a.firstName.localeCompare(b.firstName);
+      } else {
+        return b.firstName.localeCompare(a.firstName);
+      }
+    });
+  };
+
   const currentRows = filteredRows || rows || [];
-  const paginatedRows = currentRows.slice(
+  const sortedRows = sortRows(currentRows);
+  const paginatedRows = sortedRows.slice(
     (page - 1) * rowsPerPage,
     page * rowsPerPage
   );
@@ -306,9 +320,31 @@ const StudentsTable = () => {
         }}
       >
         <Table sx={{ minWidth: 600 }} aria-label="customized table">
-          <TableHead>
+          <TableHead
+            sx={{
+              direction: i18n.language === "ar" ? "rtl" : "ltr",
+            }}
+          >
             <TableRow>
-              <StyledTableCell>{t("studentsTable.firstName")}</StyledTableCell>
+              <StyledTableCell>
+                <Box
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    cursor: "pointer",
+                  }}
+                  onClick={() =>
+                    setSortOrder(sortOrder === "asc" ? "desc" : "asc")
+                  }
+                >
+                  {t("studentsTable.firstName")}
+                  {sortOrder === "asc" ? (
+                    <ArrowUpwardIcon sx={{ ml: 1, fontSize: 16 }} />
+                  ) : (
+                    <ArrowDownwardIcon sx={{ ml: 1, fontSize: 16 }} />
+                  )}
+                </Box>
+              </StyledTableCell>
               <StyledTableCell>{t("studentsTable.lastName")}</StyledTableCell>
               <StyledTableCell>
                 {t("studentsTable.dateOfBirth")}
@@ -341,7 +377,7 @@ const StudentsTable = () => {
                           row.gender === "Male" || row.gender === "ذكر"
                             ? maleImage
                             : femaleImage
-                        } // عرض الصورة بناءً على الجنس
+                        }
                         variant="square"
                         sx={{
                           height: 20,
